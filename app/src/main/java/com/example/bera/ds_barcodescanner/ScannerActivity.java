@@ -34,11 +34,12 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     private void initItemData() {
 
         XStream xstream = new XStream();
-        xstream.alias("product", Product.class);
-        xstream.addImplicitCollection(Product.class, "item");
+        xstream.processAnnotations(Item.class);
+        xstream.processAnnotations(Product.class);
         String barcodeData = FileLoader.loadRawFile(this, R.raw.barcode_data).replaceAll("\t", "");
         Item item = (Item) xstream.fromXML(barcodeData);
         item.getProducts();
+
     }
 
     @Override
