@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DS_barcodeScanner</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="btn_scan">바코드 스캔</string>
+    <string name="btn_download">바코드 다운로드</string>
+</resources>
