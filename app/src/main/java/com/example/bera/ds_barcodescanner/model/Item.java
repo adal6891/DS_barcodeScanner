@@ -9,16 +9,16 @@ import java.util.List;
 /**
  * Created by bera on 2015-05-31.
  */
-@XStreamAlias("item")
+@XStreamAlias("root")
 public class Item {
     @XStreamImplicit(itemFieldName = "products")
-    private List products = new ArrayList();
+    private List<Product> products = new ArrayList();
 
     public void add(Product product){
         products.add(product);
     }
 
-    public List getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 }

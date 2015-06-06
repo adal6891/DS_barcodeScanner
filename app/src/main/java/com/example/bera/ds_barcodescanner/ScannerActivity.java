@@ -2,6 +2,7 @@ package com.example.bera.ds_barcodescanner;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -18,6 +19,8 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     private static final String TAG = ScannerActivity.class.getSimpleName();
     private ZXingScannerView mScannerView;
     private TextView bcodeTextView;
+    private TextView pnameTextView;
+    private Item item;
 
     @Override
     public void onCreate(Bundle state) {
@@ -25,21 +28,22 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
         setContentView(R.layout.activity_scan);
         FrameLayout scanwrapper = (FrameLayout) findViewById(R.id.scan_view_wrapper);
         bcodeTextView = (TextView) findViewById(R.id.bcode_text);
+        pnameTextView = (TextView) findViewById(R.id.pname_text);
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         scanwrapper.addView(mScannerView);
-
+        bcodeTextView.setText("");
+        pnameTextView.setText("");
         initItemData();
     }
 
     private void initItemData() {
-
         XStream xstream = new XStream();
-        xstream.processAnnotations(Item.class);
-        xstream.processAnnotations(Product.class);
+        xstream.alias("root", Item.class);
+        xstream.alias("product", Product.class);
+        xstream.addImplicitCollection(Item.class, "products");
         String barcodeData = FileLoader.loadRawFile(this, R.raw.barcode_data).replaceAll("\t", "");
-        Item item = (Item) xstream.fromXML(barcodeData);
+        item = (Item) xstream.fromXML(barcodeData);
         item.getProducts();
-
     }
 
     @Override
@@ -57,26 +61,29 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
 
     @Override
     public void handleResult(Result rawResult) {
-        // Do something with the result here
-//        Log.v(TAG, rawResult.getText()); // Prints scan results
-//        Log.v(TAG, rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
         boolean resultValue;
         resultValue = checkResult(rawResult);
 
-        if(resultValue==true) {
+        if (resultValue == true) {
             bcodeTextView.setText(rawResult.getText());
         } else {
-            bcodeTextView.setText("no barcode");
+            bcodeTextView.setText(rawResult.getText());
+            pnameTextView.setText(R.string.error_message);
         }
         mScannerView.startCamera();
     }
 
     public boolean checkResult(Result barCode) {
-        String data = "123456789012";
-        if (data.equals(barCode.toString())) {
-            return true;
-        } else {
-            return false;
+        Log.d("barcode", barCode.getText());
+        if (item != null && item.getProducts() != null) {
+            for (Product product : item.getProducts()) {
+                Log.d("product", product.getBarcode());
+                if (product.getBarcode().equals(barCode.getText())) {
+                    pnameTextView.setText(product.getName());
+                    return true;
+                }
+            }
         }
+        return false;
     }
 }

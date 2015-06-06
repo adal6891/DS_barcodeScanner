@@ -9,32 +9,13 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class MainActivity extends AppCompatActivity {
+public class DownloadActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btn_scan = (Button)findViewById(R.id.btn_scan);
-        Button btn_download = (Button)findViewById(R.id.btn_download);
-
-        final Intent intent_scan = new Intent(this, ScannerActivity.class);
-        final Intent intent_download = new Intent(this, DownloadActivity.class);
-
-        btn_scan.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent_scan);
-            }
-        });
-
-        btn_download.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent_download);
-            }
-        });
     }
 
     @Override

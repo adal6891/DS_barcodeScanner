@@ -5,4 +5,5 @@
     <string name="action_settings">Settings</string>
     <string name="btn_scan">바코드 스캔</string>
     <string name="btn_download">바코드 다운로드</string>
+    <string name="error_message">잘못 찍히거나 없는 바코드입니다</string>
 </resources>

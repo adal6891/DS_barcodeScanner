@@ -7,6 +7,14 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @XStreamAlias("product")
 public class Product {
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @XStreamAlias("barcode")
     private String barcode;
     @XStreamAlias("name")
